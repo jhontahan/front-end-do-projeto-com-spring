@@ -1,8 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import Login from './views/login';
-import 'bootswatch/dist/flatly/bootstrap.css'
-import './custom.css'
+// import Login from '../views/login';
+// import CadastroUsuario from '../views/cadastroUsuario';
+
+import Rotas from "./rotas";
+
+import Navbar from "../components/navbar";
+
+import "bootswatch/dist/flatly/bootstrap.css";
+import ".././custom.css";
 
 // function App() {
 //   return (
@@ -25,9 +31,8 @@ import './custom.css'
 //   );
 // }
 
-class App extends React.Component{
+class App extends React.Component {
   //Documentação de como fazer classes e funções
-
 
   // state = {
   //   numero1 : '',
@@ -38,18 +43,18 @@ class App extends React.Component{
   // somar = () => {
   //   const resultado = parseInt(this.state.numero1) + parseInt(this.state.numero2)
   //   this.setState({resultao : resultado})
-    
+
   // }
 
   // render(){
   //   return(
   //     <div>
   //       <label>Número 1:</label>
-  //       <input type="text" value={this.state.numero1} 
+  //       <input type="text" value={this.state.numero1}
   //              onChange={(e) => this.setState({numero1: e.target.value})}></input>
   //       <br/>
   //       <label>Número 2:</label>
-  //       <input type="text" value={this.state.numero2} 
+  //       <input type="text" value={this.state.numero2}
   //              onChange={(e) => this.setState({numero2: e.target.value})}></input>
 
   //       <br/>
@@ -60,15 +65,16 @@ class App extends React.Component{
   //   )
   // }
 
-  render (){
+  render() {
     return (
-      <div>
-        <Login/>
-      
-      </div>
-    )
+      <>
+        <Navbar />
+        <div className="container">
+          <Rotas />
+        </div>
+      </>
+    );
   }
-
 }
 
 export default App;
