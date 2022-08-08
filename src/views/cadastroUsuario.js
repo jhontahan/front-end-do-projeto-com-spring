@@ -2,7 +2,7 @@ import React from "react";
 import Card from "../components/card";
 import FormGroup from "../components/form-group"; 
 
-import {Navigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 class CadastroUsuario extends React.Component{
 
@@ -10,17 +10,16 @@ class CadastroUsuario extends React.Component{
         nome : '',
         email : '',
         senha : '',
-        senhaRepeticao : '',
-        redirect : false
+        senhaRepeticao : ''
     }
 
     cadastrar = () => {
         console.log(this.state);
     }
 
-    cancelar = () => {
-        this.setState({redirect : true})
-    }
+    // cancelar = () => {
+    //     this.setState({redirect : true})
+    // }
 
     render(){
         return(
@@ -28,7 +27,7 @@ class CadastroUsuario extends React.Component{
                 <div className="row">
                      {/*método que será chamado sempre que o valor de redirect for mudado
                     o navigate séra chamado e encaminhado para a rota passada. */}
-                    {this.state.redirect && <Navigate to="/login" replace={true}/>}
+                    {/* {this.state.redirect && <Navigate to="/login" replace={true}/>} */}
                     <div className="col-lg-12">
                         <div className="bs-component">
                             <FormGroup label="Nome: *" htmlFor="inputNome">
@@ -56,8 +55,9 @@ class CadastroUsuario extends React.Component{
                             </FormGroup>
 
                             <button type="button" className="btn btn-success" onClick={this.cadastrar}>Salvar</button>
-                            <button onClick={this.cancelar} type="button" className="btn btn-danger">Cancelar</button>
-
+                            <Link to="/login">
+                                <button type="button" className="btn btn-danger">Cancelar</button>
+                            </Link>
                         </div>
                     </div>
                 </div>

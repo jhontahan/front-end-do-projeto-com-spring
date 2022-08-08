@@ -4,14 +4,13 @@ import Card from '../components/card';
 
 import FormGroup from "../components/form-group";
 
-import {Navigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 class Login extends React.Component{
 
     state = {
         email : '',
-        senha : '',
-        redirect : false
+        senha : ''
     }
 
     entrar = () => {
@@ -19,9 +18,9 @@ class Login extends React.Component{
         console.log("senha: ", this.state.senha)
     }
 
-    prepareCadastrar = () => {
-        this.setState({redirect : true})
-    }
+    // prepareCadastrar = () => {
+    //     this.setState({redirect : true})
+    // }
 
     render(){
         return (
@@ -29,7 +28,7 @@ class Login extends React.Component{
 
             {/*método que será chamado sempre que o valor de redirect for mudado
             o navigate séra chamado e encaminhado para a rota passada. */}
-            {this.state.redirect && <Navigate to="/cadastro-usuarios" replace={true}/>}
+            {/* {this.state.redirect && <Navigate to="/cadastro-usuarios" replace={true}/>} */}
             <div className="col-md-6" style={{position: 'relative', left: '300px'} }>
                 <div className="bs-docs-section">
                     <Card title="Login">
@@ -54,8 +53,11 @@ class Login extends React.Component{
                                         </FormGroup>
 
                                         <button onClick={this.entrar} className="btn btn-success">Entrar</button>
-                                        <button onClick={this.prepareCadastrar} className="btn btn-danger">Cadastrar</button>
-
+                                        <Link to="/cadastro-usuarios">
+                                            <button className="btn btn-danger">Cadastrar
+                                            
+                                            </button>
+                                        </Link>
                                         
 
                                     </fieldset>
