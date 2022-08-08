@@ -1,7 +1,8 @@
 import React from "react";
 import Card from "../components/card";
-import FormGroup from "../components/form-group";
-import {withRouter} from "react-router-dom";
+import FormGroup from "../components/form-group"; 
+
+import {Navigate} from 'react-router-dom';
 
 class CadastroUsuario extends React.Component{
 
@@ -9,7 +10,8 @@ class CadastroUsuario extends React.Component{
         nome : '',
         email : '',
         senha : '',
-        senhaRepeticao : ''
+        senhaRepeticao : '',
+        redirect : false
     }
 
     cadastrar = () => {
@@ -17,14 +19,16 @@ class CadastroUsuario extends React.Component{
     }
 
     cancelar = () => {
-        this.props.history.push("/login")
-        console.log(this.props.history)
+        this.setState({redirect : true})
     }
 
     render(){
         return(
             <Card title="Cadastro de Usuário">
                 <div className="row">
+                     {/*método que será chamado sempre que o valor de redirect for mudado
+                    o navigate séra chamado e encaminhado para a rota passada. */}
+                    {this.state.redirect && <Navigate to="/login" replace={true}/>}
                     <div className="col-lg-12">
                         <div className="bs-component">
                             <FormGroup label="Nome: *" htmlFor="inputNome">
@@ -62,4 +66,4 @@ class CadastroUsuario extends React.Component{
     }
 }
 
-export default withRouter(CadastroUsuario)
+export default CadastroUsuario
