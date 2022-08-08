@@ -2,7 +2,19 @@ import React from "react"
 
 import Card from '../components/card';
 
+import FormGroup from "../components/form-group";
+
 class Login extends React.Component{
+
+    state = {
+        email : '',
+        senha : ''
+    }
+
+    entrar = () => {
+        console.log("email: ", this.state.email)
+        console.log("senha: ", this.state.senha)
+    }
 
     render(){
         return (
@@ -15,9 +27,26 @@ class Login extends React.Component{
                                 <div className="col-lg-12">
                                     <div className="bs-component">
                                         <fieldset>
-                                            <div className="form-group">
-                                                <label for></label>
-                                            </div>
+                                            <FormGroup label="email: *" htmlFor="exampleInputEmail1">
+                                                <input type="email" id="exampleInputEmail1"
+                                                       className="form-control" arial-describedby="emailHelp"
+                                                       placeholder="Digite o Email"
+                                                       value={this.state.email}
+                                                       onChange={e => this.setState({email: e.target.value})}/>
+                                            </FormGroup>
+
+                                            <FormGroup label="senha: *" htmlFor="exampleInputPassword1">
+                                                <input type="password" id="exampleInputPassword1" 
+                                                       className="form-control" 
+                                                       placeholder="Password"
+                                                       value={this.state.senha}
+                                                       onChange={e => this.setState({senha: e.target.value})}/>
+                                            </FormGroup>
+
+                                            <button onClick={this.entrar} className="btn btn-success">Entrar</button>
+                                            <button className="btn btn-danger">Cadastrar</button>
+
+
                                         </fieldset>
                                     </div>
                                 </div>

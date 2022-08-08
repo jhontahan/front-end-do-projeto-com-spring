@@ -1,11 +1,13 @@
 import React from "react";
 
-function foruGroup(props){
+function FormGroup(props){
     return(
         <div className="form-group">
-            <label for="exampleInputEmail">{props.label}</label>
-            <for type="email" ></for>
+            <label htmlFor={props.htmlFor}>{props.label}</label>
+            {props.children}
         </div>
 
     )
 }
+
+export default FormGroup
