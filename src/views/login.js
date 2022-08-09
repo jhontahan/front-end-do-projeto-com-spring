@@ -4,31 +4,76 @@ import Card from '../components/card';
 
 import FormGroup from "../components/form-group";
 
-import {Link} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 
-import axios from "axios";
+import UsuarioService from "../app/service/usuarioService";
+
+import LocalStorageService from "../app/service/localstorageService";
 
 class Login extends React.Component{
 
     state = {
         email : '',
-        senha : ''
+        senha : '', 
+        mensagemErro : null,
+        redirect : false
     }
 
+    constructor(){
+        super();
+        this.service = new UsuarioService();
+    }
+
+    //Documentação de outra forma de usar função com promisse
+
+    // entrar = async () => {
+    //     try{
+    //         const response = await axios.post("http://localhost:8080/api/usuarios/autenticar", {
+    //         email : this.state.email,
+    //         senha : this.state.senha
+    //     })
+    //     console.log("resposta ", response)
+    //     console.log("fim da requisição")
+    //     }catch(erro){
+    //         console.log(erro.response)
+    //         console.log("entrou no erro")
+    //     }
+    // }
+
+    // entrar = () => {
+    //     axios.post("http://localhost:8080/api/usuarios/autenticar", {
+    //         email : this.state.email,
+    //         senha : this.state.senha
+    //     }).then(response => {
+    //         localStorage.setItem("_usuario_logado", JSON.stringify(response.data))
+
+    //         this.setState({mensagemErro: null})
+    //         this.setState({redirect : true})
+    //     }).catch(erro => {
+    //         this.setState({mensagemErro: erro.response.data})
+    //     })
+
+    // }
+
     entrar = () => {
-        axios.post("http://localhost:8080/api/usuarios/autenticar", {
+        this.service.autenticar({
             email : this.state.email,
             senha : this.state.senha
         }).then(response => {
-            console.log(response)
+            LocalStorageService.adicionarItem("_usuario_logado", response.data)
+            // localStorage.setItem("_usuario_logado", JSON.stringify(response.data))
+
+            this.setState({mensagemErro: null})
+            this.setState({redirect : true})
         }).catch(erro => {
-            console.log(erro.response)
+            this.setState({mensagemErro: erro.response.data})
         })
+
     }
 
-    // prepareCadastrar = () => {
-    //     this.setState({redirect : true})
-    // }
+    prepareCadastrar = () => {
+        this.setState({redirect : true})
+    }
 
     render(){
         return (
@@ -36,10 +81,13 @@ class Login extends React.Component{
 
             {/*método que será chamado sempre que o valor de redirect for mudado
             o navigate séra chamado e encaminhado para a rota passada. */}
-            {/* {this.state.redirect && <Navigate to="/cadastro-usuarios" replace={true}/>} */}
+            {this.state.redirect && <Navigate to="/" replace={true}/>}
             <div className="col-md-6" style={{position: 'relative', left: '300px'} }>
                 <div className="bs-docs-section">
                     <Card title="Login">
+                        <div className="row">
+                            <span>{this.state.mensagemErro}</span>
+                        </div>
                         <div className="row">
                             <div className="col-lg-12">
                                 <div className="bs-component">

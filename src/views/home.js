@@ -1,10 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import UsuarioService from "../app/service/usuarioService";
+import LocalStorageService from "../app/service/localstorageService";
 
 class Home extends React.Component {
 
     state = {
         saldo : 0
+    }
+
+    constructor(){
+        super();
+        this.usuarioService = new UsuarioService();
+    }
+
+    //Função que será chamada logo aopós os componentes se renderizarem.
+    componentDidMount(){
+        
+        // const usuarioLogadoString = LocalStorageService.obterItem("_usuario_logado") 
+        // localStorage.getItem("_usuario_logado")
+
+        const usuarioLogadoObjeto = LocalStorageService.obterItem("_usuario_logado")
+
+        this.usuarioService.obterSaldoPorIdUsuario(usuarioLogadoObjeto.id)
+             .then(response => {
+                this.setState({saldo : response.data})
+             }).catch(erro => {
+                console.error(erro.response)
+             })
     }
 
   render() {
@@ -31,7 +54,7 @@ class Home extends React.Component {
             href="https://bootswatch.com/flatly/#"
             role="button"
           >
-            <i class="fa fa-users"></i> Cadastrar Lançamento
+            <i className="fa fa-users"></i> Cadastrar Lançamento
           </a>
         </p>
       </div>
