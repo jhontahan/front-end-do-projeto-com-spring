@@ -33,8 +33,6 @@ class ConsultaLancamentos extends React.Component{
 
         const usuarioLogadoObjeto = LocalStorageService.obterItem("_usuario_logado")
 
-        console.log(this.state)
-
         const lancamentoFiltro = {
             ano: this.state.ano,
             mes: this.state.mes,
@@ -45,10 +43,35 @@ class ConsultaLancamentos extends React.Component{
 
         this.service.consultar(lancamentoFiltro)
             .then(response => {
+
+                if(response.data.length === 0){
+                    messages.mensagemErro("Nenhu resultado encontrado.")
+                }
+
                 this.setState({lancamentos : response.data})
             }).catch(erro => [
                 messages.mensagemErro(erro.response.data)
             ])
+    }
+
+    editar = (id) => {
+        console.log("Editando o lançamento", id)
+    }
+
+    deletar = (lancamento) => {
+        this.service.deletar(lancamento.id)
+            .then(responde => {
+                const lancamentos = this.state.lancamentos;
+                const index = lancamentos.indexOf(lancamento);
+
+                lancamentos.splice(index, 1);
+
+                this.setState({lancamento: lancamentos});
+
+                messages.mensagemSucesso("Registro excluído com sucesso.")
+            }).catch(erro => {
+                messages.mensagemErro("Ocorreu um erro ao tentar deletar um lançamento.")
+            })
     }
 
     render(){
@@ -101,7 +124,9 @@ class ConsultaLancamentos extends React.Component{
                 <div className="row">
                     <div className="col-md-12">
                         <div className="bs-component">
-                            <LancamentosTable lancamentos={this.state.lancamentos}/>
+                            <LancamentosTable lancamentos={this.state.lancamentos}
+                                              deletarAction={this.deletar}
+                                              editarAction={this.editar}/>
                         </div>
                         
                     </div>
