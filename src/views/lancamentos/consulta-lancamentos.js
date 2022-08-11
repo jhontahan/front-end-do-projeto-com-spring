@@ -156,7 +156,7 @@ class ConsultaLancamentos extends React.Component{
                 </div>
 
                 <div>
-                <Dialog header="Header" visible={this.state.showConfirmDialog} 
+                <Dialog header="Confirmação" visible={this.state.showConfirmDialog} 
                         style={{ width: '50vw' }} 
                         onHide={() => this.setState({showConfirmDialog: false})}
                         footer={footer}>

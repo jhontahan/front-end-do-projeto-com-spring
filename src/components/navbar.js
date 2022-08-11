@@ -25,7 +25,7 @@ import NavbarItem from "./navbarItem";
           <ul className="navbar-nav">
             <NavbarItem href="/" label="Home"/>
             <NavbarItem href="/cadastro-usuarios" label="Usuários"/>
-            <NavbarItem href="/" label="Lançamentos"/>
+            <NavbarItem href="/cadastro-lancamentos" label="Lançamentos"/>
             <NavbarItem href="/login" label="Login"/>
           </ul>
         </div>
