@@ -13,6 +13,7 @@ import * as messages from "../../components/toastr";
 import { Dialog } from 'primereact/dialog';
 
 import { Button } from  "primereact/button";
+import { Link } from "react-router-dom";
 
 class ConsultaLancamentos extends React.Component{
     state = {
@@ -139,7 +140,10 @@ class ConsultaLancamentos extends React.Component{
                             </FormGroup>
 
                             <button onClick={this.buscar} type="button" className="btn btn-success">Buscar</button>
-                            <button type="button" className="btn btn-danger">Cadastrar</button>
+                            <Link to="/cadastro-lancamentos">
+                                <button type="button" className="btn btn-danger">Cadastrar</button>
+
+                            </Link>
                         </div>
                     </div>
                 </div>
