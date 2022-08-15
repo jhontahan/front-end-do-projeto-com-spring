@@ -12,8 +12,32 @@ const TabelaLancamentos = props => {
                 <td>{lancamento.mes}</td>
                 <td>{lancamento.status}</td>
                 <td>
-                    <button onClick={e => props.editarAction(lancamento.id)} type="button" className="btn btn-primary">Editar</button>
-                    <button onClick={e => props.deletarAction(lancamento)} type="button" className="btn btn-danger">Deletar</button>
+                    <button onClick={e => props.alterarStatus(lancamento, 'EFETIVADO')} 
+                            type="button" 
+                            className="btn btn-success" 
+                            title="Efetivar"
+                            disabled={lancamento.status !== 'PENDENTE'}>
+                        <i className="pi pi-check"></i>
+                    </button>
+                    <button onClick={e => props.alterarStatus(lancamento, 'CANCELADO')} 
+                            type="button" 
+                            className="btn btn-warning" 
+                            title="Cancelar"
+                            disabled={lancamento.status !== 'PENDENTE'}>
+                        <i className="pi pi-times"></i>
+                    </button>
+                    <button onClick={e => props.editarAction(lancamento.id)} 
+                            type="button" 
+                            className="btn btn-primary" 
+                            title="Editar">
+                        <i className="pi pi-pencil"></i>
+                    </button>
+                    <button onClick={e => props.deletarAction(lancamento)} 
+                            type="button" 
+                            className="btn btn-danger" 
+                            title="Deletar">
+                        <i className="pi pi-trash"></i>
+                    </button>
                 </td>
             </tr>
         )

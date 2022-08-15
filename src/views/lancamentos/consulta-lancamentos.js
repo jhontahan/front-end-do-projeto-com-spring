@@ -55,7 +55,7 @@ class ConsultaLancamentos extends React.Component{
             .then(response => {
 
                 if(response.data.length === 0){
-                    messages.mensagemErro("Nenhu resultado encontrado.")
+                    messages.mensagemErro("Nenhum resultado encontrado.")
                 }
 
                 this.setState({lancamentos : response.data})
@@ -96,6 +96,25 @@ class ConsultaLancamentos extends React.Component{
 
     cancelarDelecao = () =>{
         this.setState({showConfirmDialog: false, lancamentoDeletar: {}})
+    }
+
+    alterarStatus = (lancamento, status) => {
+        this.service.alterarStatus(lancamento.id, status)
+            .then(response => {
+                const lancamentos = this.state.lancamentos;
+                const index = lancamentos.indexOf(lancamento);
+                
+                if (index !== -1){
+                    lancamento['status'] = status;
+                    lancamentos[index] = lancamento;
+                    this.setState({lancamentos})
+                }
+
+                messages.mensagemSucesso("Status atualizado com sucesso.");
+
+            }).catch(error => {
+
+            })
     }
 
     render(){
@@ -147,9 +166,16 @@ class ConsultaLancamentos extends React.Component{
                                             onChange={e => this.setState({tipo: e.target.value})}/>
                             </FormGroup>
 
-                            <button onClick={this.buscar} type="button" className="btn btn-success">Buscar</button>
+                            <button onClick={this.buscar} 
+                                    type="button" 
+                                    className="btn btn-success">
+                                    <i className="pi pi-search"/> Buscar
+                            </button>
                             <Link to="/cadastro-lancamentos">
-                                <button type="button" className="btn btn-danger">Cadastrar</button>
+                                <button type="button" 
+                                        className="btn btn-danger">
+                                        <i className="pi pi-plus"/> Cadastrar
+                                </button>
 
                             </Link>
                         </div>
@@ -161,7 +187,8 @@ class ConsultaLancamentos extends React.Component{
                         <div className="bs-component">
                             <LancamentosTable lancamentos={this.state.lancamentos}
                                               deletarAction={this.abrirConrifmacao}
-                                              editarAction={this.editar}/>
+                                              editarAction={this.editar}
+                                              alterarStatus={this.alterarStatus}/>
                         </div>
                         
                     </div>
