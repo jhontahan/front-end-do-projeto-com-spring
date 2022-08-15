@@ -13,7 +13,7 @@ import * as messages from "../../components/toastr";
 import { Dialog } from 'primereact/dialog';
 
 import { Button } from  "primereact/button";
-import { Link } from "react-router-dom";
+import { Link, Navigate} from "react-router-dom";
 
 class ConsultaLancamentos extends React.Component{
     state = {
@@ -23,6 +23,8 @@ class ConsultaLancamentos extends React.Component{
         lancamentos: [],
         descricao: '',
         redirect: false, 
+        navegateTo: '',
+        idEdicao: '',
         showConfirmDialog: false, 
         lancamentoDeletar: {}
     }
@@ -63,7 +65,12 @@ class ConsultaLancamentos extends React.Component{
     }
 
     editar = (id) => {
-        console.log("Editando o lançamento", id)
+        // <Link to="/cadastro-lancamentos"/>
+        this.setState({redirect: true, navegateTo: `/cadastro-lancamentos/${id}`})
+
+        // const history = useNavigate();
+
+        // history(`/cadastro-lancamentos/`)
     }
 
     deletar = () => {
@@ -110,6 +117,7 @@ class ConsultaLancamentos extends React.Component{
 
         return(
             <Card title="Consulta Lançamentos">
+                {this.state.redirect && <Navigate to={this.state.navegateTo} replace={true}/>}
                 <div className="row">
                     <div className="col-md-6">
                         <div className="bs-component">

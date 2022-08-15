@@ -1,4 +1,5 @@
 import ApiService from "../apiservice";
+import ErroValidacao from "../exception/erroValidacao";
 
 export default class LancamentoService extends ApiService{
     constructor(){
@@ -32,6 +33,10 @@ export default class LancamentoService extends ApiService{
         ]
     }
 
+    obterPotId(id){
+        return this.get(`/${id}`);
+    }
+
     consultar(lancamentoFiltro){
         let params = `?ano=${lancamentoFiltro.ano}`
 
@@ -63,6 +68,41 @@ export default class LancamentoService extends ApiService{
 
     salvar(lancamento){
         return this.post('/', lancamento);
+    }
+
+    atualizar(lancamento){
+        return this.put(`/${lancamento.id}`, lancamento);
+    }
+
+    validar(lancamento){
+        const erros = [];
+
+        if(!lancamento.ano){
+            erros.push("Informe o Ano.")
+        }
+
+        if(!lancamento.mes){
+            erros.push("Informe o Mês.")
+        }
+        
+        if(!lancamento.descricao){
+            erros.push("Informe o Descrição.")
+        }
+        
+        if(!lancamento.valor){
+            erros.push("Informe o Valor.")
+        }
+        
+        if(!lancamento.tipo){
+            erros.push("Informe o Tipo.")
+        }
+
+
+        if (erros && erros.length > 0){
+            throw new ErroValidacao(erros);
+        }
+
+
     }
 
 }

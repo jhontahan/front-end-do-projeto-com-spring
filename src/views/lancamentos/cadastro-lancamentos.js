@@ -20,7 +20,9 @@ class CadastroLancamentos extends React.Component{
         ano: '',
         tipo: '', 
         status: '',
-        redirect: false
+        usuario: null,
+        redirect: false,
+        atualizando: false
 
     }
 
@@ -39,6 +41,21 @@ class CadastroLancamentos extends React.Component{
 
         const lancamento = { descricao, valor, mes, ano, tipo, usuario: usuarioLogadoObjeto.id }
 
+        try{
+            this.service.validar(lancamento)
+        }catch(erro){
+            const msgs = erro.mensagens;
+
+            if (msgs && msgs.length > 0){
+                msgs.forEach((msg, index) => {
+                   messages.mensagemErro(msg) 
+                })
+    
+                return false;
+            }
+            return false;
+        }
+
         this.service.salvar(lancamento)
             .then(response => {
                 
@@ -50,11 +67,44 @@ class CadastroLancamentos extends React.Component{
             })
     }
 
+    atualizar = () => {
+
+        const {descricao, valor, mes, ano, tipo, id, usuario } = this.state;
+
+        const lancamento = { descricao, valor, mes, ano, tipo, usuario, id }
+
+        this.service.atualizar(lancamento)
+            .then(response => {
+                
+                this.setState({redirect: true})
+
+                messages.mensagemSucesso("Lançamento atualizado com sucesso.")
+            }).catch(erro => {
+                messages.mensagemErro(erro.response.data)
+            })
+    }
+
 
     constructor(){
         super();
         this.service = new LancamentoService();
     }
+
+    componentDidMount(){
+        
+        if(this.props.id){
+            this.service.obterPotId(this.props.id)
+                .then(response => {
+                    this.setState({...response.data, atualizando: true})
+                    // console.log(response)
+                }).catch(error => {
+                    messages.mensagemErro(error.response.data)
+                })
+                
+        }
+
+    }
+
     render(){
 
         const tipos = this.service.obterTipos();
@@ -62,7 +112,7 @@ class CadastroLancamentos extends React.Component{
 
         return(
             
-            <Card title="Cadastro Lançamentos">
+            <Card title={this.state.atualizando ? 'Atualização de Lançamento' : 'Cadastro de Lançamento'}>
                 {this.state.redirect && <Navigate to="/consulta-lancamentos" replace={true}/>}
                 <div className="row">
                     <div className="col-md-12">
@@ -131,7 +181,16 @@ class CadastroLancamentos extends React.Component{
                 <br/>
                 <div className="row">
                     <div className="col-md-6">
-                        <button onClick={this.submit} type="button" className="btn btn-success">Salvar</button>
+                        {this.state.atualizando ? 
+                            (
+                                <button onClick={this.atualizar} type="button" className="btn btn-success">Atualizar</button>
+                            ) : 
+
+                            (
+                                <button onClick={this.submit} type="button" className="btn btn-success">Salvar</button>
+                            )
+
+                        }
                         <Link to="/consulta-lancamentos">
                             <button type="button" className="btn btn-danger">Cancelar</button>
                         </Link>

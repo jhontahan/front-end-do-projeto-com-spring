@@ -23,46 +23,21 @@ class CadastroUsuario extends React.Component{
         this.usuarioService = new UsuarioService();
     }
 
-    validar(){
-        const mensagens = []
-
-        if (!this.state.nome){
-            mensagens.push("O campo Nome é obrigatório.")
-        }
-        if (!this.state.email){
-            mensagens.push("O campo Email é obrigatório.")
-        }
-        else if(!this.state.email.match(/^[a-z0-9.]+@[a-z0-8]+\.[a-z]/)){
-            mensagens.push("Informe um Email válido.")
-        }
-        if (!this.state.senha || !this.state.senhaRepeticao){
-            mensagens.push("Digite a senha 2x.")
-        }
-        else if (this.state.senha !== this.state.senhaRepeticao){
-            mensagens.push("As senhas não batem.")
-        }
-
-
-        return mensagens;
-    }
-
     cadastrar = () => {
         // console.log(this.state);
 
-        const msgs = this.validar();
+        const {nome, email, senha, senhaRepeticao} = this.state
 
-        if (msgs && msgs.length > 0){
+        const usuario = { nome, email, senha, senhaRepeticao }
+
+        try{
+            this.usuarioService.validar(usuario)
+        }catch(erro){
+            const msgs = erro.mensagens;
             msgs.forEach((msg, index) => {
-               mensagemErro(msg) 
+                mensagemErro(msg) 
             })
-
             return false;
-        }
-
-        const usuario = {
-            nome: this.state.nome,
-            email: this.state.email,
-            senha: this.state.senha
         }
 
         this.usuarioService.salvar(usuario)
@@ -90,24 +65,28 @@ class CadastroUsuario extends React.Component{
                             <FormGroup label="Nome: *" htmlFor="inputNome">
                                 <input type="text" id="inputNome" 
                                         name="nome" className="form-control"
+                                        value={this.state.nome}
                                         onChange={e => this.setState({nome: e.target.value})}/>
                             </FormGroup>
 
                             <FormGroup label="Email: *" htmlFor="inputEmail">
                                 <input type="email" id="inputEmail" 
                                         name="email" className="form-control"
+                                        value={this.state.email}
                                         onChange={e => this.setState({email: e.target.value})}/>
                             </FormGroup>
 
                             <FormGroup label="Senha: *" htmlFor="inputSenha">
                                 <input type="password" id="inputSenha" 
                                         name="senha" className="form-control"
+                                        value={this.state.senha}
                                         onChange={e => this.setState({senha: e.target.value})}/>
                             </FormGroup>
 
                             <FormGroup label="Repita a Senha: *" htmlFor="inputRepitaSenha">
                                 <input type="password" id="inputRepitaSenha" 
                                         name="senhaRepeticao" className="form-control"
+                                        value={this.state.senhaRepeticao}
                                         onChange={e => this.setState({senhaRepeticao: e.target.value})}/>
                             </FormGroup>
 
