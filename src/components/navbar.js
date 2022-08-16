@@ -2,6 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import NavbarItem from "./navbarItem";
+import AuthService from "../app/service/authService";
+
+const deslogar = () => {
+  AuthService.removerUsuarioAutenticado()
+}
 
  export default function Navbar() {
   return (
@@ -26,7 +31,8 @@ import NavbarItem from "./navbarItem";
             <NavbarItem href="/" label="Home"/>
             <NavbarItem href="/cadastro-usuarios" label="Usuários"/>
             <NavbarItem href="/consulta-lancamentos" label="Lançamentos"/>
-            <NavbarItem href="/login" label="Login"/>
+            {/* <NavbarItem href="/login" label="Login"/> */}
+            <NavbarItem onClick={deslogar} href="/login" label="Sair"/>
           </ul>
         </div>
       </div>

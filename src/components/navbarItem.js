@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function NavbarItem(props){
     return(
         <li className="nav-item">
-            <Link className="nav-link" to={props.href}>
+            <Link onClick={props.onClick} className="nav-link" to={props.href}>
                 {props.label}
             </Link>
         </li>

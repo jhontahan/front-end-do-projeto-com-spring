@@ -10,15 +10,12 @@ import ConsultaLancamentos from "../views/lancamentos/consulta-lancamentos";
 import RotasId from "../componentsFuncionais/rotas";
 import CadastroLancamentos from "../views/lancamentos/cadastro-lancamentos";
 
+import AuthService from "../app/service/authService";
 
-const isUsuarioAutenticado = () => {
-    const autenticado = false;
-    return autenticado;
-}
 
 const RotasAutenticadas = ({children, redirectTo}) =>{
     return(
-        isUsuarioAutenticado() ? children : <Navigate to="/login"/> 
+        AuthService.isUsuarioAutenticado() ? children : <Navigate to="/login"/> 
     )
 
 }
