@@ -10,17 +10,17 @@ import ConsultaLancamentos from "../views/lancamentos/consulta-lancamentos";
 import RotasId from "../componentsFuncionais/rotas";
 import CadastroLancamentos from "../views/lancamentos/cadastro-lancamentos";
 
-import AuthService from "../app/service/authService";
+import { AuthConsumer } from "./provedorAutenticacao";
 
 
-const RotasAutenticadas = ({children, redirectTo}) =>{
+const RotasAutenticadas = ({children, redirectTo, isUsuarioAutenticado}) =>{
     return(
-        AuthService.isUsuarioAutenticado() ? children : <Navigate to="/login"/> 
+        isUsuarioAutenticado ? children : <Navigate to={redirectTo}/> 
     )
 
 }
 
-function Rotas(){
+function Rotas(props){
     return(
         
         <HashRouter>
@@ -31,18 +31,18 @@ function Rotas(){
 
                 {/* <RotasAutenticadas path="/" element={<Home />}/> */}
                 <Route path="/" 
-                       element={<RotasAutenticadas redirectTo="/login"> 
+                       element={<RotasAutenticadas redirectTo="/login" isUsuarioAutenticado={props.isUsuarioAutenticado}> 
                             <Home/>
                         </RotasAutenticadas>}>
                 </Route>
                 <Route path="/consulta-lancamentos" 
-                       element={<RotasAutenticadas redirectTo="/login">
+                       element={<RotasAutenticadas redirectTo="/login" isUsuarioAutenticado={props.isUsuarioAutenticado}>
                             <ConsultaLancamentos />
                         </RotasAutenticadas>}>
                 </Route>
                 
                 <Route path="/cadastro-lancamentos" 
-                       element={<RotasAutenticadas redirectTo="/login">
+                       element={<RotasAutenticadas redirectTo="/login" isUsuarioAutenticado={props.isUsuarioAutenticado}>
                             <CadastroLancamentos />
                         </RotasAutenticadas>}>
                 </Route>
@@ -50,7 +50,7 @@ function Rotas(){
                 {/* <Route path="/cadastro-lancamentos/:id" element={<RotasId/>}/> */}
 
                 <Route path="/cadastro-lancamentos/:id" 
-                       element={<RotasAutenticadas redirectTo="/login">
+                       element={<RotasAutenticadas redirectTo="/login" isUsuarioAutenticado={props.isUsuarioAutenticado}>
                             <RotasId />
                         </RotasAutenticadas>}>
                 </Route>
@@ -60,4 +60,10 @@ function Rotas(){
     )
 }
 
-export default Rotas
+const RotaAuthProvedor = () => (
+    <AuthConsumer>
+        {(context)=> (<Rotas isUsuarioAutenticado={context.isAutenticado}/>)}
+    </AuthConsumer>
+)
+
+export default RotaAuthProvedor

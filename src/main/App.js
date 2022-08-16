@@ -4,6 +4,7 @@ import React from "react";
 // import CadastroUsuario from '../views/cadastroUsuario';
 
 import Rotas from "./rotas";
+import ProvedorAutenticacao from "./provedorAutenticacao";
 
 import "toastr/build/toastr.min.js";
 
@@ -73,12 +74,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <>
+      <ProvedorAutenticacao>
 
         <div className="container">
           <Rotas />
         </div>
-      </>
+      </ProvedorAutenticacao>
     );
   }
 }

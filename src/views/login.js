@@ -8,9 +8,9 @@ import {Link, Navigate} from 'react-router-dom';
 
 import UsuarioService from "../app/service/usuarioService";
 
-import LocalStorageService from "../app/service/localstorageService";
-
 import {mensagemErro} from "../components/toastr"
+
+import { AuthContext } from "../main/provedorAutenticacao";
 
 class Login extends React.Component{
 
@@ -62,8 +62,10 @@ class Login extends React.Component{
             email : this.state.email,
             senha : this.state.senha
         }).then(response => {
-            LocalStorageService.adicionarItem("_usuario_logado", response.data)
+            // LocalStorageService.adicionarItem("_usuario_logado", response.data)
             // localStorage.setItem("_usuario_logado", JSON.stringify(response.data))
+            
+            this.context.iniciarSessao(response.data)
 
             this.setState({mensagemErro: null})
             this.setState({redirect : true})
@@ -132,5 +134,7 @@ class Login extends React.Component{
     }
 
 }
+
+Login.contextType = AuthContext
 
 export default Login

@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import UsuarioService from "../app/service/usuarioService";
-import LocalStorageService from "../app/service/localstorageService";
 import  currencyFormatter from "currency-formatter";
+
+import { AuthContext } from "../main/provedorAutenticacao";
 
 class Home extends React.Component {
 
@@ -21,7 +22,9 @@ class Home extends React.Component {
         // const usuarioLogadoString = LocalStorageService.obterItem("_usuario_logado") 
         // localStorage.getItem("_usuario_logado")
 
-        const usuarioLogadoObjeto = LocalStorageService.obterItem("_usuario_logado")
+        // const usuarioLogadoObjeto = LocalStorageService.obterItem("_usuario_logado")
+
+        const usuarioLogadoObjeto = this.context.usuarioAutenticado
 
         this.usuarioService.obterSaldoPorIdUsuario(usuarioLogadoObjeto.id)
              .then(response => {
@@ -62,5 +65,7 @@ class Home extends React.Component {
     );
   }
 }
+
+Home.contextType = AuthContext;
 
 export default Home;

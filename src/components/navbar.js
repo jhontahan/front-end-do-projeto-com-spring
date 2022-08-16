@@ -2,13 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import NavbarItem from "./navbarItem";
-import AuthService from "../app/service/authService";
 
-const deslogar = () => {
-  AuthService.removerUsuarioAutenticado()
-}
+import { AuthConsumer } from "../main/provedorAutenticacao";
 
- export default function Navbar() {
+// const deslogar = () => {
+//   AuthService.removerUsuarioAutenticado()
+// }
+
+// const isUsuarioAutenticado = () => {
+//   const autenticado = AuthService.isUsuarioAutenticado();
+//   return autenticado;
+// }
+
+function Navbar(props) {
   return (
     <div
       className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
@@ -28,11 +34,11 @@ const deslogar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav">
-            <NavbarItem href="/" label="Home"/>
-            <NavbarItem href="/cadastro-usuarios" label="Usuários"/>
-            <NavbarItem href="/consulta-lancamentos" label="Lançamentos"/>
+            <NavbarItem render={props.isUsuarioAutenticado} href="/" label="Home"/>
+            <NavbarItem render={props.isUsuarioAutenticado} href="/cadastro-usuarios" label="Usuários"/>
+            <NavbarItem render={props.isUsuarioAutenticado} href="/consulta-lancamentos" label="Lançamentos"/>
             {/* <NavbarItem href="/login" label="Login"/> */}
-            <NavbarItem onClick={deslogar} href="/login" label="Sair"/>
+            <NavbarItem render={props.isUsuarioAutenticado} onClick={props.deslogar} href="/login" label="Sair" id="sair"/>
           </ul>
         </div>
       </div>
@@ -40,3 +46,20 @@ const deslogar = () => {
   );
 }
 
+// export default () => (
+//   <AuthConsumer>
+//     {(context) => (
+//       <Navbar isUsuarioAutenticado={context.isAutenticado}/>
+//     )}
+//   </AuthConsumer>
+// )
+
+const RotasAuthConsumer = () => (
+  <AuthConsumer>
+    {(context) => (
+      <Navbar isUsuarioAutenticado={context.isAutenticado} deslogar={context.encerrarSessao}/>
+    )}
+  </AuthConsumer>
+)
+
+export default RotasAuthConsumer
