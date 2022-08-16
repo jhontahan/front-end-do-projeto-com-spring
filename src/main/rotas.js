@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, HashRouter } from "react-router-dom"
+import { Route, Routes, HashRouter, Navigate } from "react-router-dom"
 
 import Login from "../views/login";
 import CadastroUsuario from "../views/cadastroUsuario";
@@ -10,18 +10,54 @@ import ConsultaLancamentos from "../views/lancamentos/consulta-lancamentos";
 import RotasId from "../componentsFuncionais/rotas";
 import CadastroLancamentos from "../views/lancamentos/cadastro-lancamentos";
 
+
+const isUsuarioAutenticado = () => {
+    const autenticado = false;
+    return autenticado;
+}
+
+const RotasAutenticadas = ({children, redirectTo}) =>{
+    return(
+        isUsuarioAutenticado() ? children : <Navigate to="/login"/> 
+    )
+
+}
+
 function Rotas(){
     return(
         
         <HashRouter>
             <Navbar />
             <Routes>
-                <Route path="/" element={<Home />}/>
                 <Route path="/login" element={<Login />}/>
                 <Route path="/cadastro-usuarios" element={<CadastroUsuario/>}/>  
-                <Route path="/consulta-lancamentos" element={<ConsultaLancamentos/>}/>
-                <Route exact path="/cadastro-lancamentos" element={<CadastroLancamentos/>}/>
-                <Route path="/cadastro-lancamentos/:id" element={<RotasId/>}/>
+
+                {/* <RotasAutenticadas path="/" element={<Home />}/> */}
+                <Route path="/" 
+                       element={<RotasAutenticadas redirectTo="/login"> 
+                            <Home/>
+                        </RotasAutenticadas>}>
+                </Route>
+                <Route path="/consulta-lancamentos" 
+                       element={<RotasAutenticadas redirectTo="/login">
+                            <ConsultaLancamentos />
+                        </RotasAutenticadas>}>
+                </Route>
+                
+                <Route path="/cadastro-lancamentos" 
+                       element={<RotasAutenticadas redirectTo="/login">
+                            <CadastroLancamentos />
+                        </RotasAutenticadas>}>
+                </Route>
+
+                {/* <Route path="/cadastro-lancamentos/:id" element={<RotasId/>}/> */}
+
+                <Route path="/cadastro-lancamentos/:id" 
+                       element={<RotasAutenticadas redirectTo="/login">
+                            <RotasId />
+                        </RotasAutenticadas>}>
+                </Route>
+                
             </Routes>
         </HashRouter>
     )
