@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, HashRouter, Navigate } from "react-router-dom"
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom"
 
 import Login from "../views/login";
 import CadastroUsuario from "../views/cadastroUsuario";
@@ -23,7 +23,7 @@ const RotasAutenticadas = ({children, redirectTo, isUsuarioAutenticado}) =>{
 function Rotas(props){
     return(
         
-        <HashRouter>
+        <BrowserRouter>
             <Navbar />
             <Routes>
                 <Route path="/login" element={<Login />}/>
@@ -56,7 +56,7 @@ function Rotas(props){
                 </Route>
                 
             </Routes>
-        </HashRouter>
+        </BrowserRouter>
     )
 }
 
