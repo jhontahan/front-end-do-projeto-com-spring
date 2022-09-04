@@ -86,7 +86,7 @@ class Login extends React.Component{
             {/*método que será chamado sempre que o valor de redirect for mudado
             o navigate séra chamado e encaminhado para a rota passada. */}
             {this.state.redirect && <Navigate to="/" replace={true}/>}
-            <div className="col-md-6" style={{position: 'relative', left: '300px'} }>
+            <div className="col-md-6 offset-md-3">
                 <div className="bs-docs-section">
                     <Card title="Login">
                         <div className="row">
