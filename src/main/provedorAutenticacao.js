@@ -1,5 +1,6 @@
 import React from "react";
 import AuthService from "../app/service/authService";
+import jwtDecode from "jwt-decode";
 
 export const AuthContext = React.createContext();
 export const AuthConsumer = AuthContext.Consumer;
@@ -13,14 +14,33 @@ class ProvedorAutenticacao extends React.Component {
         isAutenticado: false
     }
 
-    iniciarSessao = (usuario) => {
-        AuthService.logar(usuario);
+    iniciarSessao = (tokenDTO) => {
+        const token = tokenDTO.token;
+        const claims = jwtDecode(token);
+        const usuario = {
+            id: claims.userId,
+            nome: claims.nome
+        }
+
+        
+        AuthService.logar(usuario, token);
         this.setState({isAutenticado: true, usuarioAutenticado: usuario})
     }
 
     encerrarSessao = () => {
         AuthService.removerUsuarioAutenticado();
         this.setState({isAutenticado: false, usuarioAutenticado: null})
+    }
+
+    componentDidMount(){
+       const isAutenticado = AuthService.isUsuarioAutenticado();
+       if (isAutenticado){
+            const usuario = AuthService.refresSession();
+            this.setState({
+                isAutenticado: true,
+                usuarioAutenticado: usuario
+            })
+       }
     }
 
     render(){
